@@ -16,7 +16,7 @@ import java.io.Writer;
  * @date 2019/4/29 18:01
  */
 @Order(1)
-@WebFilter(filterName = "elvesAuthFilter", urlPatterns = "/*")
+@WebFilter(filterName = "elvesAuthFilter", urlPatterns = "/api/*")
 public class ElvesAuthFilter implements Filter {
 
     @Resource
@@ -30,7 +30,7 @@ public class ElvesAuthFilter implements Filter {
             return;
         }
         //supervisor权限鉴定
-        boolean flag =true;
+        boolean flag = true;
         if(!flag){
             Writer writer = response.getWriter();
             writer.write("fail");

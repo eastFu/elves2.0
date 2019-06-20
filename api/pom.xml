@@ -11,8 +11,7 @@
     <artifactId>elves-api</artifactId>
     <packaging>jar</packaging>
 
-    <name>elves-api ${project.version}</name>
-    <description>Demo project for Spring Boot</description>
+    <name>elves-api-${project.version}</name>
 
     <dependencies>
         <dependency>
@@ -32,27 +31,30 @@
             <version>${project.version}</version>
         </dependency>
 
-        <!--quartz cron job -->
+
         <dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz</artifactId>
-            <version>2.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz-jobs</artifactId>
-            <version>2.2.1</version>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>elves-cmdb</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>elves-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>elves-heartbeat</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>elves-queue</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

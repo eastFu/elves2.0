@@ -1,15 +1,16 @@
 package cn.gyyx.elves.scheduler.listener;
 
 import cn.gyyx.elves.core.config.ElvesConfig;
+import cn.gyyx.elves.core.thrift.SchedulerService;
 import cn.gyyx.elves.core.utils.ExceptionUtil;
 import cn.gyyx.elves.scheduler.service.SchedulerServiceImpl;
-import cn.gyyx.elves.scheduler.thrift.SchedulerService;
+import org.apache.log4j.Logger;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TServerSocket;
-import org.springframework.boot.context.event.ApplicationStartingEvent;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +23,9 @@ import javax.annotation.Resource;
  * @date 2019/4/29 18:01
  */
 @Component
-public class SchedulerListener implements ApplicationListener<ApplicationStartingEvent> {
+public class SchedulerListener implements ApplicationListener<ApplicationReadyEvent> {
+
+    private static final Logger LOG = Logger.getLogger(SchedulerListener.class);
 
     @Resource
     private ElvesConfig elvesConfig;
@@ -31,12 +34,13 @@ public class SchedulerListener implements ApplicationListener<ApplicationStartin
     private SchedulerServiceImpl schedulerServiceImpl;
 
     @Override
-    public void onApplicationEvent(ApplicationStartingEvent applicationStartingEvent) {
+    public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         new Thread(()->startSchedulerService()).start();
     }
 
     private void startSchedulerService(){
         try {
+            LOG.info("start heartbeat service port :"+elvesConfig.getHeartbeatPort());
             TProcessor tprocessor = new SchedulerService.Processor<SchedulerService.Iface>(schedulerServiceImpl);
             TServerSocket serverTransport = new TServerSocket(elvesConfig.getSchedulerPort());
             TThreadPoolServer.Args ttpsArgs = new TThreadPoolServer.Args(serverTransport);
@@ -46,7 +50,7 @@ public class SchedulerListener implements ApplicationListener<ApplicationStartin
             TServer server = new TThreadPoolServer(ttpsArgs);
             server.serve();
         } catch (Exception e) {
-            System.out.println("start scheduler thrift controller error,msg:"+ ExceptionUtil.getStackTraceAsString(e));
+            LOG.error("start scheduler thrift webservice error,msg:"+ ExceptionUtil.getStackTraceAsString(e));
         }
     }
 }

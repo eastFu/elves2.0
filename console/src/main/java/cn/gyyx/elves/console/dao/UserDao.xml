@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gyyx.elves.console.dao.UserDao">
+
+	<select id="queryListForPage" parameterType="map" resultType="map">
+		SELECT  * FROM user
+	</select>
+
+
+	<insert id="insert" parameterType="map">
+		INSERT INTO user
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="email != null and email !=''">
+					email,
+				</if>
+				<if test="password != null and password !=''">
+					password,
+				</if>
+				<if test="user_name != null and user_name !=''">
+					user_name,
+				</if>
+				<if test="founder != null and founder !=''">
+					founder,
+				</if>
+				<if test="create_time != null and create_time !=''">
+					create_time,
+				</if>
+				<if test="update_time != null and update_time !=''">
+					update_time,
+				</if>
+				<if test="last_login_time != null and last_login_time !=''">
+					last_login_time,
+				</if>
+				<if test="last_login_ip != null and last_login_ip !=''">
+					last_login_ip,
+				</if>
+				<if test="login_times != null and login_times !=''">
+					login_times,
+				</if>
+			</trim>
+
+			<trim prefix="values (" suffix=")" suffixOverrides=",">
+				<if test="email != null and email !=''">
+					#{email},
+				</if>
+				<if test="password != null and password !=''">
+					#{password},
+				</if>
+				<if test="user_name != null and user_name !=''">
+					#{user_name},
+				</if>
+				<if test="founder != null and founder !=''">
+					#{founder},
+				</if>
+				<if test="create_time != null and create_time !=''">
+					#{create_time},
+				</if>
+				<if test="update_time != null and update_time !=''">
+					#{update_time},
+				</if>
+				<if test="last_login_time != null and last_login_time !=''">
+					#{last_login_time},
+				</if>
+				<if test="last_login_ip != null and last_login_ip !=''">
+					#{last_login_ip},
+				</if>
+				<if test="login_times != null and login_times !=''">
+					#{login_times},
+				</if>
+			</trim>
+	</insert>
+
+	<update id="update" parameterType="map">
+		UPDATE user
+		<trim prefix="set" suffixOverrides=",">
+				<if test="email != null and email !=''">
+					email = #{email},
+				</if>
+				<if test="password != null and password !=''">
+					password = #{password},
+				</if>
+				<if test="user_name != null and user_name !=''">
+					user_name = #{user_name},
+				</if>
+				<if test="founder != null and founder !=''">
+					founder = #{founder},
+				</if>
+				<if test="create_time != null and create_time !=''">
+					create_time = #{create_time},
+				</if>
+				<if test="update_time != null and update_time !=''">
+					update_time = #{update_time},
+				</if>
+				<if test="last_login_time != null and last_login_time !=''">
+					last_login_time = #{last_login_time},
+				</if>
+				<if test="last_login_ip != null and last_login_ip !=''">
+					last_login_ip = #{last_login_ip},
+				</if>
+				<if test="login_times != null and login_times !=''">
+					login_times = #{login_times},
+				</if>
+		</trim>
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="map">
+		DELETE FROM user WHERE id = #{id}
+	</delete>
+
+
+	<select id="queryTotalByField" parameterType="map" resultType="int">
+		SELECT
+			 COUNT(0) as totalEmail
+			 FROM user
+			 WHERE 1=1
+			 AND email = #{email}
+			<if test="id != null and id !=''">
+				AND id != #{id}
+			</if>
+	</select>
+
+</mapper>

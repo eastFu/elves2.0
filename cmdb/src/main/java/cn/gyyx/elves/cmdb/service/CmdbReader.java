@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface CmdbReader {
 
-    public List<String> getColumns();
+    List<String> getColumns();
 }

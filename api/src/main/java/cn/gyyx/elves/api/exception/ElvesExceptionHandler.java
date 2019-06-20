@@ -1,6 +1,6 @@
 package cn.gyyx.elves.api.exception;
 
-import cn.gyyx.elves.api.vo.ElvesResponse;
+import cn.gyyx.elves.core.api.ElvesResponse;
 import cn.gyyx.elves.core.enums.Errorcode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,4 +26,15 @@ public class ElvesExceptionHandler {
         logger.error(e.getMessage(),e);
         return ElvesResponse.newErrorInstance(Errorcode.ERR401);
     }
+
+    /*@ExceptionHandler({Exception.class})
+    @ResponseBody
+    public Result<Object> errorHandler(Exception ex) {
+        logger.error("ExceptionControllerAdvice" + ex.getMessage());
+        if(ex instanceof AppException){
+            AppException appEx = (AppException)ex;
+            return ResultUtil.error(appEx.getCode(),ex.getMessage());
+        }
+        return ResultUtil.error(ex.getMessage());
+    }*/
 }

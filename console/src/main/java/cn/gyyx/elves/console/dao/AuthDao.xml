@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gyyx.elves.console.dao.AuthDao">
+
+	<select id="queryListForPage" parameterType="map" resultType="map">
+		SELECT   T_auth.*,
+				 T_app.app_name,
+				 T_app.`instruct`
+				 FROM `auth_key` T_auth
+				 LEFT JOIN app T_app ON T_auth.app_id = T_app.app_id
+				 ORDER BY T_auth.create_time DESC
+	</select>
+
+
+	<insert id="insert" parameterType="map">
+		INSERT INTO auth_key
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="auth_id != null and auth_id !=''">
+					auth_id,
+				</if>
+				<if test="auth_key != null and auth_key !=''">
+					auth_key,
+				</if>
+				<if test="auth_name != null and auth_name !=''">
+					auth_name,
+				</if>
+				<if test="create_time != null and create_time !=''">
+					create_time,
+				</if>
+				<if test="app_id != null and app_id !=''">
+					app_id,
+				</if>
+			</trim>
+
+			<trim prefix="values (" suffix=")" suffixOverrides=",">
+				<if test="auth_id != null and auth_id !=''">
+					#{auth_id},
+				</if>
+				<if test="auth_key != null and auth_key !=''">
+					#{auth_key},
+				</if>
+				<if test="auth_name != null and auth_name !=''">
+					#{auth_name},
+				</if>
+				<if test="create_time != null and create_time !=''">
+					#{create_time},
+				</if>
+				<if test="app_id != null and app_id !=''">
+					#{app_id},
+				</if>
+			</trim>
+	</insert>
+
+	<update id="update" parameterType="map">
+		UPDATE auth_key
+			<set>
+				<if test="auth_key != null and auth_key !=''">
+					`auth_key` = #{auth_key},
+				</if>
+				<if test="auth_name != null and auth_name !=''">
+					`auth_name` = #{auth_name},
+				</if>
+				<if test="create_time != null and create_time !=''">
+					`create_time` = #{create_time},
+				</if>
+				<if test="app_id != null and app_id !=''">
+					`app_id` = #{app_id},
+				</if>
+			</set>
+		WHERE 1=1
+			AND auth_id = #{auth_id}
+	</update>
+
+	<delete id="delete" parameterType="map">
+		DELETE FROM auth_key WHERE auth_id = #{auth_id}
+	</delete>
+
+
+	<select id="queryTotalByField" parameterType="map" resultType="int">
+		SELECT
+			 COUNT(0) as totalAuthName
+			 FROM auth_key
+			 WHERE 1=1
+			 AND app_id = #{app_id}
+			<if test="auth_id != null and auth_id !=''">
+				AND auth_id != #{auth_id}
+			</if>
+	</select>
+
+</mapper>

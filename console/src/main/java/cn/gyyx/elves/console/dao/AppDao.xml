@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gyyx.elves.console.dao.AppDao">
+
+	<select id="queryListForPage" parameterType="map" resultType="map">
+		SELECT app.*,
+			 ifnull(agent.agent_count,0) as agent_count
+			 FROM (
+							SELECT a.*,v.`version` FROM app a
+									LEFT JOIN app_version v
+									ON a.`version_id`=v.`id`
+						 ) app
+			 LEFT JOIN (
+								SELECT COUNT(1) AS agent_count,
+											 app_id
+											 FROM `app_agent` GROUP BY app_id
+									) agent ON app.`app_id` = agent.app_id
+			  ORDER BY app.create_time DESC
+	</select>
+
+
+
+	<insert id="insert" parameterType="map">
+		INSERT INTO app
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="app_id != null and app_id !=''">
+					app_id,
+				</if>
+				<if test="instruct != null and instruct !=''">
+					instruct,
+				</if>
+				<if test="app_name != null and app_name !=''">
+					app_name,
+				</if>
+				<if test="founder != null and founder !=''">
+					founder,
+				</if>
+				<if test="create_time != null and create_time !=''">
+					create_time,
+				</if>
+				<if test="update_time != null and update_time !=''">
+					update_time,
+				</if>
+				<if test="version_id != null and version_id !=''">
+					version_id,
+				</if>
+				<if test="bindUrl != null and bindUrl !=''">
+					bindUrl,
+				</if>
+			</trim>
+
+			<trim prefix="values (" suffix=")" suffixOverrides=",">
+				<if test="app_id != null and app_id !=''">
+					#{app_id},
+				</if>
+				<if test="instruct != null and instruct !=''">
+					#{instruct},
+				</if>
+				<if test="app_name != null and app_name !=''">
+					#{app_name},
+				</if>
+				<if test="founder != null and founder !=''">
+					#{founder},
+				</if>
+				<if test="create_time != null and create_time !=''">
+					#{create_time},
+				</if>
+				<if test="update_time != null and update_time !=''">
+					#{update_time},
+				</if>
+				<if test="version_id != null and version_id !=''">
+					#{version_id},
+				</if>
+				<if test="bindUrl != null and bindUrl !=''">
+					#{bindUrl},
+				</if>
+			</trim>
+	</insert>
+
+	<update id="update" parameterType="map">
+		UPDATE app
+			<set>
+				<if test="instruct != null and instruct !=''">
+					`instruct` = #{instruct},
+				</if>
+				<if test="app_name != null and app_name !=''">
+					`app_name` = #{app_name},
+				</if>
+				<if test="founder != null and founder !=''">
+					`founder` = #{founder},
+				</if>
+				<if test="create_time != null and create_time !=''">
+					`create_time` = #{create_time},
+				</if>
+				<if test="update_time != null and update_time !=''">
+					`update_time` = #{update_time},
+				</if>
+				<if test="version_id != null and version_id !=''">
+					`version_id` = #{version_id},
+				</if>
+				<if test="bindUrl != null and bindUrl !=''">
+					`bindUrl` = #{bindUrl},
+				</if>
+			</set>
+		WHERE 1=1
+			AND app_id = #{app_id}
+	</update>
+
+	<delete id="delete" parameterType="map">
+		DELETE FROM app WHERE app_id = #{app_id}
+	</delete>
+
+
+	<select id="queryTotalByField" parameterType="map" resultType="int">
+		SELECT
+			 COUNT(0) as totalInstruct
+			 FROM app
+			 WHERE 1=1
+			 AND instruct = #{instruct}
+			<if test="app_id != null and app_id !=''">
+				AND app_id != #{app_id}
+			</if>
+	</select>
+
+	<select id="queryList" parameterType="map" resultType="map">
+		SELECT * FROM app
+	</select>
+
+
+	<update id="updateAppVersion" parameterType="map">
+		UPDATE  app_version
+				SET create_time=now(),
+				version=#{version},
+				operator=#{operator}
+				WHERE 1=1
+				and id = #{id}
+	</update>
+
+	<insert id="insertAppVersion" parameterType="map">
+		INSERT INTO app_version(
+						version,
+						operator,
+						app_id,
+						create_time
+						)VALUES(
+						#{version},
+						#{operator},
+						#{app_id},
+						now()
+						)
+	</insert>
+
+	<update id="startAppVersion">
+		UPDATE app
+		 	   SET version_id = #{version_id}
+		 	   WHERE 1=1
+		 	   AND app_id = #{app_id}
+	</update>
+	
+	<select id="queryAppInfoToHeartbeat" resultType="map">
+		SELECT   T_app.instruct as app,
+				 T_version.version  as version,
+				 group_concat(T_agent.ip) as agentList
+				 FROM app T_app
+				 LEFT JOIN app_version T_version on T_version.id = T_app.version_id
+				 LEFT JOIN app_agent T_agent on T_agent.app_id = T_app.app_id
+				 WHERE 1=1
+				 AND T_app.version_id IS NOT NULL
+				 GROUP BY T_app.app_id
+	</select>
+	
+	<select id="queryAuthAppList" parameterType="map" resultType="map">
+		SELECT * FROM app_agent
+				 WHERE 1=1
+				 AND app_id = #{app_id}
+	</select>
+
+	<select id="queryAgentAll" parameterType="map" resultType="map">
+		SELECT * FROM app_agent
+		WHERE 1=1
+		AND app_id = #{app_id}
+	</select>
+	
+</mapper>

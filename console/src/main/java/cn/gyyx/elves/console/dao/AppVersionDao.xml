@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gyyx.elves.console.dao.AppVersionDao">
+
+	<select id="queryListForPage" parameterType="map" resultType="map">
+
+SELECT  T_version.*,
+				cast(IF(T_app.version_id IS NULL,'false','true') as char)as  version_id
+			    FROM app_version T_version
+				LEFT JOIN app T_app on T_app.version_id = T_version.id
+				WHERE 1=1
+				AND T_version.app_id = #{app_id}
+			    ORDER BY create_time DESC
+	</select>
+
+
+
+
+</mapper>

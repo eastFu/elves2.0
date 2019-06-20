@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gyyx.elves.cron.dao.TaskResultDao">
+
+    <insert id="insert" parameterType="map">
+        INSERT INTO task_result(
+                                cron_id,
+                                flag,
+                                error,
+                                worker_flag,
+                                worker_message,
+                                worker_costtime,
+                                end_time
+                                )
+                    VALUES (
+                                #{cron_id},
+                                #{flag},
+                                #{error},
+                                #{worker_flag},
+                                #{worker_message},
+                                #{worker_costtime},
+                                #{end_time}
+                    )
+    </insert>
+    
+    <delete id="delete" parameterType="map">
+        DELETE FROM task_result WHERE 1=1
+                    AND cron_id = #{cron_id}
+    </delete>
+
+    <select id="queryByCronId" parameterType="String" resultType="map">
+        SELECT * FROM task_result WHERE 1=1
+                      AND cron_id = #{cron_id}
+    </select>
+    
+</mapper>

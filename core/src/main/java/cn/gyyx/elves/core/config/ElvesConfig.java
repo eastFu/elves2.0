@@ -1,21 +1,24 @@
 package cn.gyyx.elves.core.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-
 /**
  * @ClassName: ElvesConfig
  * @Description: *.property 配置文件加载类
  * @author East.F
  * @date 2016年5月5日 上午11:51:27
  */
-@Component
-@ConfigurationProperties(prefix = "elves", ignoreUnknownFields = true)
+/*@Component
+@ConfigurationProperties(prefix = "elves", ignoreUnknownFields = true)*/
 public class ElvesConfig {
 
+    /**
+     * thrift connect timeout : 10000ms = 10s
+     */
     private int schedulerConnectTimeout = 10000;
 
-    private int schedulerSocketTimeout = 90000;
+    /**
+     *  thrift read timeout : 90s = 90000ms
+     */
+    private int schedulerSocketTimeout = 90;
 
     private int schedulerPort = 10101;
 

@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: elves-api
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:mysql://10.12.51.22:3306/elves_supervisor?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    max-idle: 10
+    max-wait: 10000
+    min-idle: 5
+    initial-size: 5
+    validation-query: SELECT 1
+    test-on-borrow: false
+    test-while-idle: true
+    time-between-eviction-runs-millis: 18800
+    jdbc-interceptors: ConnectionState;SlowQueryReport(threshold=0)
+  thymeleaf:
+    prefix: classpath:/templates/
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+    static-path-pattern: /static/**
+
+mybatis:
+  mapper-locations: classpath*:cn/gyyx/elves/*/dao/*.xml
+  type-aliases-package: cn.gyyx.elves.*.domain
+  config-location:  classpath:mybatis-config.xml
+server:
+  port: 8081
+
+console:
+  ftp:
+    ftpHost: 192.168.8.209
+    ftpUserName: test
+    ftpPassword: 123456
+    ftpPort: 21
+    ftpPath: up
