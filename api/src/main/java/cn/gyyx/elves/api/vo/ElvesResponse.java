@@ -15,7 +15,7 @@ public class ElvesResponse implements Serializable {
 
     private static final String SUCCESS_FLAG = "true";
 
-    private static final String ERROR_FLAG = "flase";
+    private static final String ERROR_FLAG = "false";
 
     /**
      * false/true

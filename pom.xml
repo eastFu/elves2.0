@@ -24,7 +24,7 @@
         <module>api</module>
         <module>scheduler</module>
         <module>console</module>
-        <!--<module>cron</module>-->
+        <module>cron</module>
         <module>heartbeat</module>
         <module>cmdb</module>
         <module>cron</module>
@@ -37,7 +37,6 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.34</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
@@ -133,11 +132,11 @@
                 <artifactId>elves-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <!--<dependency>
+            <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>elves-cron</artifactId>
                 <version>${project.version}</version>
-            </dependency>-->
+            </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>elves-queue</artifactId>
